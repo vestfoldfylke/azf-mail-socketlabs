@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js project to Azure Function App - PROD
+name: Build and deploy Node.js project to Azure Function App - TEST
 
 on:
-  release:
-    types: [published]
-    branches: [main]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -38,7 +38,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'vfkplzfellesapimailapi'
+          app-name: 'vfkdlzfellesapimailapi'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_PROD }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DEV }}
