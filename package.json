@@ -13,13 +13,13 @@
   "author": "Rune Moskvil Lyngås <rune.moskvil.lyngaas@vtfk.no>",
   "license": "ISC",
   "dependencies": {
-    "@socketlabs/email": "1.2.3",
+    "@socketlabs/email": "^1.4.4",
     "@vtfk/e18": "2.1.5",
     "ajv": "8.10.0",
     "ajv-base64": "1.0.0",
     "ajv-formats": "2.1.1",
     "barhandles": "0.5.4",
-    "handlebars": "4.7.7"
+    "handlebars": "4.7.8"
   },
   "devDependencies": {
     "jest": "27.5.1",
