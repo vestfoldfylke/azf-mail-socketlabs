@@ -57,8 +57,7 @@ module.exports = async function (context, req) {
       return { status: 200, body: mailRes }
     } catch (error) {
       if (E18_ENABLED) await roadRunner(req, { status: 'failed', error, message: 'Failed when sending mail' }, context)
-      context.log.error(`Failed when sending email`)
-      context.log.error(error)
+      context.log.error('Failed when sending email')
       try {
         JSON.stringify(error)
         context.log.error(error)
