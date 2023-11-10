@@ -52,15 +52,21 @@ module.exports = async function (context, req) {
   } else {
     const mail = generateMail(message)
     try {
-      await sendMail(context, mail)
+      const mailRes = await sendMail(context, mail)
       if (E18_ENABLED) await roadRunner(req, { status: 'completed', data: mail }, context)
-      return response(mail)
+      return { status: 200, body: mailRes }
     } catch (error) {
       if (E18_ENABLED) await roadRunner(req, { status: 'failed', error, message: 'Failed when sending mail' }, context)
-      return response({
-        error: error.responseMessage || error,
-        mail
-      }, 500)
+      context.log.error(`Failed when sending email`)
+      context.log.error(error)
+      try {
+        JSON.stringify(error)
+        context.log.error(error)
+        return { status: 500, body: error }
+      } catch (jsonError) {
+        context.log.error(error.response?.data || error.responseMessage || error.stack || error.toString())
+        return { status: 500, body: error.response?.data || error.responseMessage || error.stack || error.toString() }
+      }
     }
   }
 }
