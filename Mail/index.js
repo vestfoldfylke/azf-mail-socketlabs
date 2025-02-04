@@ -1,15 +1,13 @@
-const { create: roadRunner } = require('@vtfk/e18')
 const validateInput = require('../lib/validate-input')
 const generateMail = require('../lib/generate-mail')
 const sendMail = require('../lib/send-mail')
 const response = require('../lib/get-response-object')
-const { RECEIVER_CHUNK_SIZE, CHUNK_TIMEOUT_MS, E18_ENABLED } = require('../config')
+const { RECEIVER_CHUNK_SIZE, CHUNK_TIMEOUT_MS } = require('../config')
 
 module.exports = async function (context, req) {
   const message = req.body
   const { validationMatched, validationError, validationMessage } = validateInput(context, message)
   if (!validationMatched) {
-    if (E18_ENABLED) await roadRunner(req, { status: 'failed', error: validationError, message: validationMessage }, context)
     return response({
       message: validationMessage,
       error: validationError || ''
@@ -35,10 +33,8 @@ module.exports = async function (context, req) {
 
       try {
         await sendMail(context, mail)
-        if (E18_ENABLED) await roadRunner(req, { status: 'completed', data: mail }, context)
         res.success.push(mail)
       } catch (error) {
-        if (E18_ENABLED) await roadRunner(req, { status: 'failed', error, message: 'Failed when sending mail' }, context)
         res.failed.push({
           error: error.responseMessage || error,
           mail
@@ -53,10 +49,8 @@ module.exports = async function (context, req) {
     const mail = generateMail(message)
     try {
       const mailRes = await sendMail(context, mail)
-      if (E18_ENABLED) await roadRunner(req, { status: 'completed', data: mail }, context)
       return { status: 200, body: mailRes }
     } catch (error) {
-      if (E18_ENABLED) await roadRunner(req, { status: 'failed', error, message: 'Failed when sending mail' }, context)
       context.log.error('Failed when sending email')
       try {
         JSON.stringify(error)

@@ -2,7 +2,6 @@
   "name": "azf-mail-sendgrid",
   "version": "1.0.4",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "refresh": "rm -rf node_modules && rm package-lock.json && npm i",
     "start": "func start",
@@ -14,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@socketlabs/email": "^1.4.4",
-    "@vtfk/e18": "2.1.5",
+    "@vtfk/logger": "^6.3.3",
     "ajv": "8.10.0",
     "ajv-base64": "1.0.0",
     "ajv-formats": "2.1.1",
